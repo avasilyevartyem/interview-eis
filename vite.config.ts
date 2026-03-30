@@ -1,7 +1,22 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import svgr from 'vite-plugin-svgr';
+import { resolve } from 'node:path';
 
-// https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
-})
+  plugins: [react(), svgr()],
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, 'src'),
+    },
+  },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://showroom.eis24.me',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '/c300/api/v4/test'),
+      },
+    },
+  },
+});

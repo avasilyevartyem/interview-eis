@@ -1,7 +1,7 @@
 export type Gap = { type: 'gap'; pages: number[] };
 export type PageItem = number | Gap;
 
-const range = (from: number, to: number): number[] =>
+export const range = (from: number, to: number): number[] =>
   Array.from({ length: to - from + 1 }, (_, i) => from + i);
 
 export function buildPages(current: number, total: number): PageItem[] {

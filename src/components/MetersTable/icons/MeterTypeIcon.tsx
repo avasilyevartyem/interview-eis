@@ -8,9 +8,16 @@ interface MeterTypeIconProps {
 }
 
 export function MeterTypeIcon({ type }: MeterTypeIconProps) {
-  if (type === 'ХВС') return <ColdWaterIcon />;
-  if (type === 'ГВС') return <HotWaterIcon />;
-  if (type === 'ЭЛДТ') return <ElectricityDailyIcon />;
-  if (type === 'ТПЛ') return <ThermalEnergyIcon />;
-  return null;
+  switch (type) {
+    case 'ХВС':
+      return <ColdWaterIcon />;
+    case 'ГВС':
+      return <HotWaterIcon />;
+    case 'ЭЛДТ':
+      return <ElectricityDailyIcon />;
+    case 'ТПЛ':
+      return <ThermalEnergyIcon />;
+    default:
+      return null;
+  }
 }

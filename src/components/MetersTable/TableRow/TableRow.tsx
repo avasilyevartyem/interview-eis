@@ -1,14 +1,12 @@
 import { observer } from 'mobx-react-lite';
-import type { Instance } from 'mobx-state-tree';
 import { metersStore } from '@/stores/MetersStore';
+import type { MeterType } from '@/stores/MetersStore';
 import { MeterTypeIcon } from '@/components/MetersTable/icons/MeterTypeIcon';
 import TrashIcon from '@/assets/TrashIcon.svg?react';
 import './TableRow.css';
 
-type MeterInstance = Instance<typeof metersStore.meters>[number];
-
 interface TableRowProps {
-  meter: MeterInstance;
+  meter: MeterType;
   rowNum: number;
 }
 

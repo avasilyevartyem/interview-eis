@@ -1,37 +1,9 @@
 import { types, flow, cast } from 'mobx-state-tree';
 import type { Instance } from 'mobx-state-tree';
+import { metersApi } from '../api/metersApi';
+import type { RawArea, RawMeter, PagedResponse } from '../api/types';
 
 const PAGE_SIZE = 20;
-const BASE_URL = '/api';
-
-interface RawArea {
-  id: string;
-  number: number | null;
-  str_number_full: string | null;
-  str_number: string | null;
-  house: { id: string; address: string; fias_addrobjs: string[] } | null;
-}
-
-interface RawMeter {
-  id: string;
-  _type: string[];
-  area: { id: string };
-  is_automatic: boolean | null;
-  description: string | null;
-  installation_date: string | null;
-  initial_values: number[];
-  serial_number: string;
-  model_name: string | null;
-  brand_name: string | null;
-  communication: string;
-}
-
-interface PagedResponse<T> {
-  count: number;
-  next: string | null;
-  previous: string | null;
-  results: T[];
-}
 
 const HouseModel = types.model('House', {
   id: types.string,
@@ -47,15 +19,11 @@ const AreaModel = types.model('Area', {
   house: types.maybeNull(HouseModel),
 });
 
-const MeterAreaRefModel = types.model('MeterAreaRef', {
-  id: types.string,
-});
-
 const MeterModel = types
   .model('Meter', {
     id: types.identifier,
     _type: types.array(types.string),
-    area: MeterAreaRefModel,
+    area: types.model('MeterAreaRef', { id: types.string }),
     is_automatic: types.maybeNull(types.boolean),
     description: types.maybeNull(types.string),
     installation_date: types.maybeNull(types.string),
@@ -122,14 +90,8 @@ const MetersStoreModel = types
       );
       if (!unknownIds.length) return;
 
-      const params = new URLSearchParams();
-      unknownIds.forEach((id) => params.append('id__in', id));
-
-      const response: Response = yield fetch(`${BASE_URL}/areas/?${params}`);
-      if (!response.ok)
-        throw new Error(`Ошибка загрузки адресов: ${response.status}`);
-
-      const data: PagedResponse<RawArea> = yield response.json();
+      const data: PagedResponse<RawArea> =
+        yield metersApi.fetchAreas(unknownIds);
       data.results.forEach((area) =>
         self.areas.set(area.id, area as Parameters<typeof self.areas.set>[1])
       );
@@ -139,17 +101,10 @@ const MetersStoreModel = types
       self.isLoading = true;
       self.error = null;
       try {
-        const offset = (page - 1) * PAGE_SIZE;
-        const params = new URLSearchParams({
-          limit: String(PAGE_SIZE),
-          offset: String(offset),
-        });
-
-        const response: Response = yield fetch(`${BASE_URL}/meters/?${params}`);
-        if (!response.ok)
-          throw new Error(`Ошибка загрузки счётчиков: ${response.status}`);
-
-        const data: PagedResponse<RawMeter> = yield response.json();
+        const data: PagedResponse<RawMeter> = yield metersApi.fetchMeters(
+          page,
+          PAGE_SIZE
+        );
         self.meters = cast(data.results);
         self.totalCount = data.count;
         self.currentPage = page;
@@ -165,16 +120,7 @@ const MetersStoreModel = types
     const deleteMeter = flow(function* (meterId: string) {
       self.deletingId = meterId;
       try {
-        const response: Response = yield fetch(
-          `${BASE_URL}/meters/${meterId}/`,
-          {
-            method: 'DELETE',
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error(`Ошибка удаления: ${response.status}`);
-        }
+        yield metersApi.deleteMeter(meterId);
 
         const newTotal = self.totalCount - 1;
         const targetPage =
@@ -198,5 +144,6 @@ const MetersStoreModel = types
   });
 
 export type MetersStoreType = Instance<typeof MetersStoreModel>;
+export type MeterType = MetersStoreType['meters'][number];
 
 export const metersStore = MetersStoreModel.create({});

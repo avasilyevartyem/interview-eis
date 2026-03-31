@@ -1,4 +1,4 @@
-import { createRootRoute, Outlet, notFound } from '@tanstack/react-router';
+import { createRootRoute, Outlet } from '@tanstack/react-router';
 
 export const rootRoute = createRootRoute({
   component: () => <Outlet />,
@@ -9,5 +9,3 @@ export const rootRoute = createRootRoute({
     </div>
   ),
 });
-
-export { notFound };

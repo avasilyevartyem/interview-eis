@@ -51,7 +51,7 @@ printWidth: 80
 ## Для запуска проекта используйте следующие команды
 
 ```
-git clone https://github.com/southatelove/interview-eis.git
+git clone https://github.com/avasilyevartyem/interview-eis.git
 ```
 
 ```
@@ -67,6 +67,10 @@ npm run dev
 - **TypeScript**
 - **React**
 - **Mobx-state-tree**
+- **Tanstack**
+- **Husky**
+- **Github Actions**
+- **Vitest**
 - **Vite**
 
 ## Итог

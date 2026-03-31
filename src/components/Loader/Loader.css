@@ -1,0 +1,46 @@
+.loader {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(1px);
+}
+
+.loader__spinner {
+  animation: loader-rotate 0.9s linear infinite;
+}
+
+.loader__track {
+  stroke: #e0e5eb;
+}
+
+.loader__arc {
+  stroke: #3698fa;
+  stroke-dasharray: 80 45;
+  animation: loader-dash 1.4s ease-in-out infinite;
+}
+
+@keyframes loader-rotate {
+  to {
+    transform: rotate(360deg);
+    transform-origin: center;
+  }
+}
+
+@keyframes loader-dash {
+  0% {
+    stroke-dasharray: 1 124;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 90 34;
+    stroke-dashoffset: -35;
+  }
+  100% {
+    stroke-dasharray: 90 34;
+    stroke-dashoffset: -124;
+  }
+}

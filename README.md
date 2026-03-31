@@ -1,73 +1,79 @@
-# React + TypeScript + Vite
+# Тестовое задание на позицию Frontend-разработчик в ООО Единая Информационная Система ЖКХ
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Техническое задание
 
-Currently, two official plugins are available:
+Создать приложение для отображения списка счётчиков горячей и холодной воды.
+Дизайн:
+https://www.figma.com/design/gxVXNv5MEY8RQ1KXRVvkUT/%D0%A2%D0%B5%D1%81
+%D1%82-(%D1%84%D1%80%D0%BE%D0%BD%D1%82)?node-id=0-1&t=QQ9ijj1biJPPjj7
+s-0
+1. Список счётчиков.
+Счётчики получать запросом GET
+http://showroom.eis24.me/c300/api/v4/test/meters/ Параметры limit=20 и offset
+(выводить по 20 на страницу).
+Данные должны выводиться на странице с внутренним скроллом
+(«шапка» фиксированная, табличка скроллится внутри).
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
-## React Compiler
+Колонки:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+1. Порядковый номер.
+2. Тип (ColdWaterAreaMeter — ХВС, HotWaterAreaMeter — ГВС).
+3. Дата установки в формате дд.мм.гггг.
+4. Автоматический ли он (is_automatic).
+5. Значение (initial_values).
+6. Адреc.
+7. Примечание (description).
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+  2. Адрес счётчика.
+    Адреса получать параллельным запросом
+    GET http://showroom.eis24.me/c300/api/v4/test/areas/ с параметром списка айди id in.
+    Продумать оптимизацию, не запрашивать уже известные адреса.
+    Выводить улицу, дом, номер квартиры.
+  3. Удаление счётчика.
+    При наведении на строку должна появляться кнопка удаления, инициирующая
+    удаление счётчика (DELETE
+    http://showroom.eis24.me/c300/api/v4/test/meters/:meterId/). На странице при этом
+    всегда должно оставаться 20 элементов.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Стек технологий:
+Использовать React, TypeScript, mobx-state-tree — обязательно,
+styled-components — по желанию.
+Конфиг Prettier
+trailingComma: "es5"
+tabWidth: 2
+semi: true
+singleQuote: true
+printWidth: 80
+Проект выложить на github.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Для запуска проекта используйте следующие команды
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+git clone https://github.com/avasilyevartyem/interview-eis.git
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
 ```
+npm i
+```
+
+```
+npm run dev
+```
+
+## Стек:
+
+- **TypeScript**
+- **React**
+- **Mobx-state-tree**
+- **Tanstack**
+- **Husky**
+- **Github Actions**
+- **Vitest**
+- **Vite**
+
+## Итог
+
+![alt text](/public/interview-eis-result.jpg)
+

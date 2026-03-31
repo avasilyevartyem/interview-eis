@@ -1,0 +1,49 @@
+.table-row {
+  border-bottom: 1px solid #e0e5eb;
+}
+
+.table-row:hover {
+  background-color: #f7f8f9;
+  cursor:
+    url('../../../assets/CursorPointerIcon.svg') 4 1,
+    pointer;
+}
+
+.table-row__delete-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  background-color: #fee3e3;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  opacity: 0;
+  color: #c53030;
+  transition:
+    opacity 0.15s ease,
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.table-row:hover .table-row__delete-btn {
+  opacity: 1;
+}
+
+.table-row__delete-btn:hover {
+  background-color: #fed7d7;
+  color: #9b2c2c;
+}
+
+.table-row__delete-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.table-row__delete-btn:focus-visible {
+  outline: 2px solid #c53030;
+  outline-offset: 2px;
+  opacity: 1;
+}
